@@ -15,11 +15,15 @@ NJtransferURL = 'https://njtransfer.org/artweb/listeqs.cgi?MI+NI'
 #page_to_scrape = requests.get(NJtransferURL,headers=headers) 
 #soup = BeautifulSoup(page_to_scrape.text, 'html.parser') 
 
-driver = webdriver.Chrome()
-driver.get(NJtransferURL)
+#driver = webdriver.Chrome()
+#driver.get(NJtransferURL)
 
+file = open("MCCtoNJIT.html","r")
+contents = file.read()
+soup = BeautifulSoup(contents, 'html.parser')
+classes = soup.find('table') #extracting data from each product
 
-
+#print(classes)
 for line in Lines:
 
     #if (line.find("Elective") and line.find("OR") and line.find("Semester") == -1): #putting it into 1 line is not working as expected, going to use a lot of if statements
@@ -32,6 +36,10 @@ for line in Lines:
     
     line = line.strip()
     line = line.replace("-","") 
+    
+    equivalent = classes.findAll("a", string=line)
+    print(equivalent)
+    
     #print(line) #classes are preprocessed and ready to compare for webscraping
     
     
