@@ -1,0 +1,30 @@
+Semester I
+CSC-105
+ENG-121
+MAD-107
+MAD-113
+MAD-114
+Semester II
+ENG-122
+GAM-218
+MAD-108
+MAD-117
+MAD-118
+Semester III
+ART-104
+OR
+ART-124
+OR
+ART-125
+GAM-219
+GAM-222
+GE Humanities Elective
+OR
+GE Social Science Elective
+GE Mathematics or Science Elective
+Semester IV
+GAM-223
+GAM-280
+Business Elective
+GE Social Science Elective
+Business Elective
