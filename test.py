@@ -4,6 +4,7 @@ import csv
 
 offline = True
 soup = None
+transferColleges = transferClassesTables = []
 
 if offline == True:
     file = open("MCCtoNJIT.html","r")
@@ -17,7 +18,10 @@ else:
     #click button and get html
     pass
 
-classEquivalencyTable = soup.find('table') #extracting just the table from site
+transferClassesTables.append(soup.find('table'))
+classEquivalencyTable = transferClassesTables[0]
+
+#classEquivalencyTable = soup.find('table') #extracting just the table from site
 
 # Using readlines() to grab all the lines in the text file
 CCclasses = open('CCclasses.txt', 'r') #txt file that has every class taken at CC on a separate line (grabbed from CC website)
