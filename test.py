@@ -1,44 +1,52 @@
 from bs4 import BeautifulSoup
-import requests
 from selenium import webdriver
+import csv
+
+offline = True
+soup = None
+
+if offline == True:
+    file = open("MCCtoNJIT.html","r")
+    contents = file.read()
+    soup = BeautifulSoup(contents, 'html.parser')
+else:
+    #webscraping stuff that i cant get to work (havent used selenium before)
+    #driver = webdriver.Chrome()
+    #NJtransferURL = 'https://njtransfer.org/artweb/listeqs.cgi?MI+NI'
+    #driver.get(NJtransferURL)
+    #click button and get html
+    pass
+
+classEquivalencyTable = soup.find('table') #extracting just the table from site
 
 # Using readlines() to grab all the lines in the text file
-file1 = open('CCclasses.txt', 'r') #txt file that has every class taken at CC on a separate line (grabbed from CC website)
-Lines = file1.readlines()
+CCclasses = open('CCclasses.txt', 'r') #txt file that has every class taken at CC on a separate line (grabbed from CC website)
+CCclasses = CCclasses.readlines()
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/99.0", 
-    "method": "GET"
-}
+file = open('output.csv', 'w')
+writer = csv.writer(file)
+writer.writerow(['Brand', 'Model', 'CPU', 'CPU Score', 'RAM (GB)', 'RAM Type', 'Storage (GB)', 'GPU', 'Size (In)', 'Color', 'Price ($)', 'Refurbed' , 'Open Box', 'Link' ]) #create CSV file
 
-NJtransferURL = 'https://njtransfer.org/artweb/listeqs.cgi?MI+NI'
-#page_to_scrape = requests.get(NJtransferURL,headers=headers) 
-#soup = BeautifulSoup(page_to_scrape.text, 'html.parser') 
-
-#driver = webdriver.Chrome()
-#driver.get(NJtransferURL)
-
-file = open("MCCtoNJIT.html","r")
-contents = file.read()
-soup = BeautifulSoup(contents, 'html.parser')
-classes = soup.find('table') #extracting data from each product
-
-#print(classes)
-for line in Lines:
+for CCclass in CCclasses:
 
     #if (line.find("Elective") and line.find("OR") and line.find("Semester") == -1): #putting it into 1 line is not working as expected, going to use a lot of if statements
-    if(line.find("Semester") != -1): #filtering to only have the class
+    if(CCclass.find("Semester") != -1): #filtering to only have the class
         continue   
-    if(line.find("Elective") != -1):
+    elif(CCclass.find("Elective") != -1):
         continue 
-    if(line.find("OR") != -1):
+    elif(CCclass.find("OR") != -1):
         continue 
     
-    line = line.strip()
-    line = line.replace("-","") 
+    CCclass = CCclass.strip() #preprocessing so it is ready to check with table
+    CCclass = CCclass.replace("-","") 
     
-    equivalent = classes.findAll("a", string=line)
-    print(equivalent)
+    potentialEquivalents = classEquivalencyTable.findAll("a", string=CCclass)
+    for equivalent in potentialEquivalents:
+        attributes = equivalent.parent.parent.findAll("td")
+        transferClass = attributes[5].text.strip()
+        comment = attributes[6].text.strip()
+        print(transferClass)
+        print(comment)
     
     #print(line) #classes are preprocessed and ready to compare for webscraping
     
