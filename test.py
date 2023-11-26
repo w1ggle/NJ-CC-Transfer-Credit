@@ -25,7 +25,7 @@ CCclasses = CCclasses.readlines()
 
 file = open('output.csv', 'w')
 writer = csv.writer(file)
-writer.writerow(['Brand', 'Model', 'CPU', 'CPU Score', 'RAM (GB)', 'RAM Type', 'Storage (GB)', 'GPU', 'Size (In)', 'Color', 'Price ($)', 'Refurbed' , 'Open Box', 'Link' ]) #create CSV file
+writer.writerow(['CC class', 'CC class name', 'Transfer class', 'comments']) #create CSV file
 
 for CCclass in CCclasses:
 
@@ -43,11 +43,13 @@ for CCclass in CCclasses:
     potentialEquivalents = classEquivalencyTable.findAll("a", string=CCclass)
     for equivalent in potentialEquivalents:
         attributes = equivalent.parent.parent.findAll("td")
+        CCclassName = attributes[2].text.strip()
         transferClass = attributes[5].text.strip()
         comment = attributes[6].text.strip()
-        print(transferClass)
-        print(comment)
+
     
-    #print(line) #classes are preprocessed and ready to compare for webscraping
+    writer.writerow([CCclass, CCclassName, transferClass, comment])
+
+file.close() 
     
     
